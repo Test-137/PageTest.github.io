@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title> Test </title>
+    <script src="./Basic_Graphics.js"></script>
+    <script src="./Motivation_System.js"></script>
+    <script src="./SHM.js"></script>
+</head>
+
+<body>
+    <canvas id="Canvas"></canvas>
+    <script>
+        //设定屏幕宽度
+        var width = 1800, height = 900;
+        var Cx = width/2, Cy = height/2;
+
+        //Canvas 对象
+        var Canvas = new EsCanvas("Canvas", width, height);
+        Canvas.background(50, 50, 50);
+
+
+        //点构造器
+        var Point = function (x, y) {
+            return { "x": x, "y": y};
+        }
+
+
+        var R = new SHM(5, ATR(2), 10);
+
+        var Nx = 50, Ny = 50;
+
+        var RectGroup = new Array();
+        for(let i=0; i<Nx*Ny; i++){
+            RectGroup.push(new SHM(5, ATR(0.01*i), 10, ATR(i*5)));
+        }
+
+
+        var DrawRect = function(RG, Sx, Sy, Nx, Ny, count) {
+            for(let y=0; y<Ny; y++) 
+            {
+                for(let x=0; x<Nx; x++)
+                {
+                    Canvas.ctx.fillStyle = `rgb(${0},${y*2 + 50},${x*2 + 50})`;
+                    let r = RG[y*Nx + x].value(count);
+                    Canvas.rect(Sx+x*20, Sy+y*20, r, r);
+                    Canvas.ctx.fill();
+                }
+            }
+        }
+
+
+        var count = 0;
+
+        function draw(){
+            Canvas.background(50,50,50);
+
+            DrawRect(RectGroup, Cx-10*Nx, Cy-10*Ny, Nx, Ny, count);
+            count++;
+        }
+
+        setInterval(draw, 50);
+
+    
+    </script>
+</body>
+
+</html> 
